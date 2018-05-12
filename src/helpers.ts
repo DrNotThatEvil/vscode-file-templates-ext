@@ -1,5 +1,5 @@
-'use strict';
-import child_process = require('child_process');
+"use strict";
+import child_process = require("child_process");
 
 /**
  * Helper funcion for open a folder in Explorer
@@ -9,14 +9,14 @@ import child_process = require('child_process');
 export function openFolderInExplorer(folder) {
     let command = null;
     switch (process.platform) {
-        case 'linux':
-            command = 'xdg-open ' + folder;
+        case "linux":
+            command = "xdg-open " + folder;
             break;
-        case 'darwin':
-            command = 'open ' + folder;
+        case "darwin":
+            command = "open " + folder;
             break;
-        case 'win32':
-            command = 'start ' + folder;;
+        case "win32":
+            command = "start " + folder;
             break;
     }
 

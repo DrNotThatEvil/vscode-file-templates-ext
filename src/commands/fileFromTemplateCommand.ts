@@ -1,11 +1,11 @@
 "use strict";
 
-import vscode = require("vscode");
 import fs = require("fs");
-import path = require("path");
-import TemplatesManager from "../templatesManager";
-import helpers = require("../helpers");
 import moment = require("moment");
+import path = require("path");
+import vscode = require("vscode");
+import helpers = require("../helpers");
+import TemplatesManager from "../templatesManager";
 
 /**
  * Main command to create a file from a template.
@@ -17,18 +17,18 @@ import moment = require("moment");
  */
 export function run(templatesManager: TemplatesManager, args: any) {
 
-    let templates = templatesManager.getTemplates();
+    const templates = templatesManager.getTemplates();
 
     // gets the target folder. if its invoked from a context menu,
     // we use that reference, otherwise we use the file system path
-    let targetFolder = args ? args.fsPath : vscode.workspace.rootPath;
+    const targetFolder = args ? args.fsPath : vscode.workspace.rootPath;
 
     if (templates.length === 0) {
-        let optionGoToTemplates = <vscode.MessageItem> {
+        const optionGoToTemplates = {
             title: "Open Templates Folder"
-        };
+        } as vscode.MessageItem;
 
-        vscode.window.showInformationMessage("No templates found!", optionGoToTemplates).then(option => {
+        vscode.window.showInformationMessage("No templates found!", optionGoToTemplates).then((option) => {
 
             // nothing selected
             if (!option) {
@@ -43,7 +43,7 @@ export function run(templatesManager: TemplatesManager, args: any) {
     }
 
     // show the list of available templates.
-    vscode.window.showQuickPick(templates).then(selection => {
+    vscode.window.showQuickPick(templates).then((selection) => {
 
         // nothing selected. cancel
         if (!selection) {
@@ -51,21 +51,21 @@ export function run(templatesManager: TemplatesManager, args: any) {
         }
 
         // ask for filename
-        let inputOptions = <vscode.InputBoxOptions> {
+        const inputOptions = {
             prompt: "Please enter the desired file name",
             value: selection,
-        };
+        } as vscode.InputBoxOptions;
 
-        vscode.window.showInputBox(inputOptions).then(filename => {
-            let workspaceSettings = vscode.workspace.getConfiguration("fileTemplates");
+        vscode.window.showInputBox(inputOptions).then((filename) => {
+            const workspaceSettings = vscode.workspace.getConfiguration("fileTemplates");
 
             let fileContents = templatesManager.getTemplate(selection);
             const className = filename.replace(/\.[^/.]+$/, "");
             const resultsPromise = [];
 
-            let expression = /#{(\w+)}/g;
+            const expression = /#{(\w+)}/g;
 
-            let placeholders = [];
+            const placeholders = [];
             let matches = expression.exec(fileContents);
             while (matches) {
                 if (placeholders.indexOf(matches[0]) === -1) {
@@ -74,7 +74,7 @@ export function run(templatesManager: TemplatesManager, args: any) {
                 matches = expression.exec(fileContents);
             }
 
-            placeholders.forEach(function (placeholder) {
+            placeholders.forEach(function(placeholder) {
                 const variableName = /#{(\w+)}/.exec(placeholder)[1];
                 const search = new RegExp(placeholder, "g");
 
@@ -83,7 +83,7 @@ export function run(templatesManager: TemplatesManager, args: any) {
                         fileContents = fileContents.replace(search, className);
                         break;
                     case "filepath":
-                        let workspaceRoot = vscode.workspace.rootPath;
+                        const workspaceRoot = vscode.workspace.rootPath;
                         fileContents = fileContents.replace(search, targetFolder.replace(`${workspaceRoot}/`, ""));
                         break;
                     case "year":
@@ -96,11 +96,11 @@ export function run(templatesManager: TemplatesManager, args: any) {
                         if (workspaceSettings && workspaceSettings[variableName]) {
                             fileContents = fileContents.replace(search, workspaceSettings[variableName]);
                         } else {
-                            let variableInput = <vscode.InputBoxOptions> {
+                            const variableInput = {
                                 prompt: `Please enter the desired value for "${variableName}"`
-                            };
-                            let variablePromise = new Promise((resolve, reject) => {
-                                vscode.window.showInputBox(variableInput).then(value => {
+                            } as vscode.InputBoxOptions;
+                            const variablePromise = new Promise((resolve, reject) => {
+                                vscode.window.showInputBox(variableInput).then((value) => {
                                     let replacement;
                                     if (!value) {
                                         replacement = variableName.toUpperCase();
@@ -120,7 +120,7 @@ export function run(templatesManager: TemplatesManager, args: any) {
 
             Promise.all(resultsPromise).then(() => {
                 const fullname = path.join(targetFolder, filename);
-                fs.writeFile(path.join(targetFolder, filename), fileContents, function (err) {
+                fs.writeFile(path.join(targetFolder, filename), fileContents, (err) => {
                     if (err) {
                         vscode.window.showErrorMessage(err.message);
                     }

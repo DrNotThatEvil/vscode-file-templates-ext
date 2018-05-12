@@ -1,8 +1,8 @@
-'use strict';
-import {WorkspaceConfiguration} from 'vscode';
-import fs = require('fs');
-import path = require('path');
-import os = require('os');
+"use strict";
+import fs = require("fs");
+import os = require("os");
+import path = require("path");
+import { WorkspaceConfiguration } from "vscode";
 /**
  * Main class to handle the logic of the File Templates
  * @export
@@ -10,7 +10,7 @@ import os = require('os');
  */
 export default class TemplatesManager {
 
-    config: WorkspaceConfiguration;
+    private config: WorkspaceConfiguration;
 
     constructor(config: WorkspaceConfiguration) {
         this.config = config;
@@ -22,15 +22,13 @@ export default class TemplatesManager {
      */
     public getTemplates(): string[] {
         // @TODO make this async (use promises ???)
-        let templateDir: string = this.getTemplatesDir();
-        let templateFiles: string[] = fs.readdirSync(templateDir).map(function (item) {
+        const templateDir: string = this.getTemplatesDir();
+        const templateFiles: string[] = fs.readdirSync(templateDir).map((item) => {
             if (!/^\./.exec(item)) {
                 return fs.statSync(path.join(templateDir, item)).isFile() ? item : null;
             }
             return null;
-        }).filter(function (filename) {
-            return filename !== null;
-        });
+        }).filter((filename) =>  filename !== null);
         return templateFiles;
     }
 
@@ -40,7 +38,7 @@ export default class TemplatesManager {
      * @return Buffer
      */
     public getTemplate(filename): string {
-        return fs.readFileSync(path.join(this.getTemplatesDir(), filename), 'utf8');
+        return fs.readFileSync(path.join(this.getTemplatesDir(), filename), "utf8");
     }
 
     /**
@@ -51,7 +49,20 @@ export default class TemplatesManager {
      * @return {string}
      */
     public getTemplatesDir(): string {
-        return this.config.get('templates_dir', this.getDefaultTemplatesDir());
+        return this.config.get("templates_dir", this.getDefaultTemplatesDir());
+    }
+
+    /**
+     * Creates the templates dir if not exists
+     * @throw Error
+     */
+    public createTemplatesDirIfNotExists() {
+        const templatesDir = this.getTemplatesDir();
+        fs.mkdir(templatesDir, "0755", (err) => {
+            if (err && err.code !== "EEXIST") {
+                throw Error("Failed to created templates directory " + templatesDir);
+            }
+        });
     }
 
     /**
@@ -62,32 +73,20 @@ export default class TemplatesManager {
         let userDataDir = null;
 
         switch (process.platform) {
-            case 'linux':
-                userDataDir = path.join(os.homedir(), '.config');
+            case "linux":
+                userDataDir = path.join(os.homedir(), ".config");
                 break;
-            case 'darwin':
-                userDataDir = path.join(os.homedir(), 'Library', 'Application Support');
+            case "darwin":
+                userDataDir = path.join(os.homedir(), "Library", "Application Support");
                 break;
-            case 'win32':
+            case "win32":
                 userDataDir = process.env.APPDATA;
                 break;
             default:
                 throw Error("Unrecognizable operative system");
         }
 
-        return path.join(userDataDir, 'Code', 'User', 'FileTemplates');
+        return path.join(userDataDir, "Code", "User", "FileTemplates");
     }
 
-    /**
-     * Creates the templates dir if not exists
-     * @throw Error
-     */
-    public createTemplatesDirIfNotExists() {
-        let templatesDir = this.getTemplatesDir();
-        fs.mkdir(templatesDir, '0755', function (err) {
-            if (err && err.code != 'EEXIST') {
-                throw Error("Failed to created templates directory " + templatesDir);
-            }
-        });
-    }
 }
