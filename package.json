@@ -21,7 +21,7 @@
     "onCommand:extension.fileFromTemplate",
     "onCommand:extension.templateFromFile"
   ],
-  "main": "./out/src/extension",
+  "main": "./out/extension",
   "contributes": {
     "configuration": {
       "type": "object",
@@ -78,12 +78,15 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
+    "@types/fs-extra": "^5.0.2",
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^7.0.43",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3",
-    "vscode": "^1.1.17",
-    "@types/node": "^7.0.43"
+    "vscode": "^1.1.17"
   },
   "dependencies": {
+    "fs-extra": "^6.0.1",
     "moment": "^2.22.1"
   }
 }

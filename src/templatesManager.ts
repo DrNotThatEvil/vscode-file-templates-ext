@@ -1,7 +1,7 @@
 "use strict";
-import fs = require("fs");
-import os = require("os");
-import path = require("path");
+import * as fs from "fs-extra";
+import * as os from "os";
+import * as path from "path";
 import { WorkspaceConfiguration } from "vscode";
 /**
  * Main class to handle the logic of the File Templates
@@ -56,13 +56,15 @@ export default class TemplatesManager {
      * Creates the templates dir if not exists
      * @throw Error
      */
-    public createTemplatesDirIfNotExists() {
+    public async createTemplatesDirIfNotExists() {
         const templatesDir = this.getTemplatesDir();
-        fs.mkdir(templatesDir, "0755", (err) => {
-            if (err && err.code !== "EEXIST") {
+        try {
+            await fs.ensureDir(templatesDir);
+        } catch (error) {
+            if (error && error.code !== "EEXIST") {
                 throw Error("Failed to created templates directory " + templatesDir);
             }
-        });
+        }
     }
 
     /**

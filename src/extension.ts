@@ -2,9 +2,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-
-import FileFromTemplateCommand = require("./commands/fileFromTemplateCommand");
-import TemplateFromFileCommand = require("./commands/templateFromFileCommand");
+import FileFromTemplateCommand from "./commands/fileFromTemplateCommand";
+import TemplateFromFileCommand from "./commands/templateFromFileCommand";
 import TemplatesManager from "./templatesManager";
 
 /**
@@ -20,16 +19,21 @@ export function activate(context: vscode.ExtensionContext) {
     templatesManager.createTemplatesDirIfNotExists();
 
     // register extension commands
-    const fftCommand = FileFromTemplateCommand.run.bind(undefined, templatesManager);
-    const fftCommandDisposable = vscode.commands.registerCommand("extension.fileFromTemplate", fftCommand);
+    const fftCommand = new FileFromTemplateCommand(templatesManager);
+    const fftCommandDisposable = vscode.commands.registerCommand("extension.fileFromTemplate", (args) => {
+        fftCommand.run(args);
+    });
     context.subscriptions.push(fftCommandDisposable);
 
-    const tffCommand =  TemplateFromFileCommand.run.bind(undefined, templatesManager);
-    const tffCommandDisposable = vscode.commands.registerCommand("extension.templateFromFile", tffCommand);
+    const tffCommand =  new TemplateFromFileCommand(templatesManager);
+    const tffCommandDisposable = vscode.commands.registerCommand("extension.templateFromFile", (args) => {
+        tffCommand.run(args);
+    });
     context.subscriptions.push(tffCommandDisposable);
 
 }
 
 // this method is called when your extension is deactivated
-// export function deactivate() {
-// }
+// tslint:disable-next-line:no-empty
+export function deactivate() {
+}
