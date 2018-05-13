@@ -1,14 +1,14 @@
 {
-  "name": "file-templates",
-  "displayName": "File Templates",
-  "description": "This Extension allows to quickly create new files based on defined templates.",
+  "name": "banxi-file-templates",
+  "displayName": "Banxi File Templates",
+  "description": "Forked from Bruno Paz's file-templates,This Extension allows to quickly create new files based on defined templates.",
   "version": "1.2.0",
-  "author": "Bruno Paz",
-  "publisher": "brpaz",
-  "homepage": "https://github.com/brpaz/vscode-file-templates-ext",
+  "author": "Bruno Paz, banxi",
+  "publisher": "banxi",
+  "homepage": "https://github.com/banxi1988/vscode-file-templates-ext",
   "repository": {
     "type": "git",
-    "url": "https://github.com/brpaz/vscode-file-templates-ext.git"
+    "url": "https://github.com/banxi1988/vscode-file-templates-ext.git"
   },
   "license": "MIT",
   "engines": {
