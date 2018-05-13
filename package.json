@@ -1,92 +1,92 @@
 {
-  "name": "banxi-file-templates",
-  "displayName": "Banxi File Templates",
-  "description": "Forked from Bruno Paz's file-templates,This Extension allows to quickly create new files based on defined templates.",
-  "version": "1.2.0",
-  "author": "Bruno Paz, banxi",
-  "publisher": "banxi",
-  "homepage": "https://github.com/banxi1988/vscode-file-templates-ext",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/banxi1988/vscode-file-templates-ext.git"
-  },
-  "license": "MIT",
-  "engines": {
-    "vscode": "^1.18.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:extension.fileFromTemplate",
-    "onCommand:extension.templateFromFile"
-  ],
-  "main": "./out/extension",
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "VSCode File Templates Configuration",
-      "properties": {
-        "fileTemplates.author": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
-          "description": "Value to use to replace #{author} variable."
-        },
-        "fileTemplates.company": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
-          "description": "Value to use to replace #{company} variable."
-        }
-      }
+    "name": "banxi-file-templates",
+    "displayName": "Banxi File Templates",
+    "description": "Forked from Bruno Paz's file-templates,This Extension allows to quickly create new files based on defined templates.",
+    "version": "1.3.0",
+    "author": "Bruno Paz, banxi",
+    "publisher": "banxi",
+    "homepage": "https://github.com/banxi1988/vscode-file-templates-ext",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/banxi1988/vscode-file-templates-ext.git"
     },
-    "commands": [
-      {
-        "command": "extension.fileFromTemplate",
-        "title": "New File from template",
-        "category": "Files"
-      },
-      {
-        "command": "extension.templateFromFile",
-        "title": "New Template from file",
-        "category": "Files"
-      }
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.18.0"
+    },
+    "categories": [
+        "Other"
     ],
-    "menus": {
-      "explorer/context": [
-        {
-          "command": "extension.fileFromTemplate"
+    "activationEvents": [
+        "onCommand:extension.fileFromTemplate",
+        "onCommand:extension.templateFromFile"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "VSCode File Templates Configuration",
+            "properties": {
+                "fileTemplates.author": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null,
+                    "description": "Value to use to replace #{author} variable."
+                },
+                "fileTemplates.company": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null,
+                    "description": "Value to use to replace #{company} variable."
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "extension.fileFromTemplate",
+                "title": "New File from template",
+                "category": "Files"
+            },
+            {
+                "command": "extension.templateFromFile",
+                "title": "New Template from file",
+                "category": "Files"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "extension.fileFromTemplate"
+                }
+            ],
+            "editor/context": [
+                {
+                    "command": "extension.templateFromFile"
+                }
+            ]
         }
-      ],
-      "editor/context": [
-        {
-          "command": "extension.templateFromFile"
-        }
-      ]
+    },
+    "scripts": {
+        "lint": "tslint -c tslint.json src/**/*.ts",
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^5.0.2",
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^7.0.43",
+        "tslint": "^5.10.0",
+        "typescript": "^2.8.3",
+        "vscode": "^1.1.17"
+    },
+    "dependencies": {
+        "fs-extra": "^6.0.1",
+        "moment": "^2.22.1"
     }
-  },
-  "scripts": {
-    "lint": "tslint -c tslint.json src/**/*.ts",
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^5.0.2",
-    "@types/mocha": "^2.2.42",
-    "@types/node": "^7.0.43",
-    "tslint": "^5.10.0",
-    "typescript": "^2.8.3",
-    "vscode": "^1.1.17"
-  },
-  "dependencies": {
-    "fs-extra": "^6.0.1",
-    "moment": "^2.22.1"
-  }
 }
